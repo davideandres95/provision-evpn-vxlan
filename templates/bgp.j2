@@ -5,7 +5,9 @@ protocols {
             {% if 'export' in group %}
             export {{ group.export_policy }};
             {% endif %}
+            {% if 'local_as' in group %}
             local-as {{ group.local_as}};
+            {% endif %}
             {% if 'local_address' in group %}
             local-address {{ group.local_address }};
             {% endif %}

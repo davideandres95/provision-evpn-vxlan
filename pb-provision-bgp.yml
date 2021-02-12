@@ -1,8 +1,12 @@
 ---
 - name: Provision BGP configuration
   hosts: juniper
+  roles:
+   - Juniper.junos
   connection: local
   gather_facts: no
+  environment:
+    PATH: "/root/provision-EVPN-VXLAN/bin"
 
   vars:
     config_file: configs/{{ inventory_hostname }}.conf
@@ -17,7 +21,12 @@
 
    - name: Load config on the device
      juniper_junos_config:
-       provider: "{{ provider }}"
+       host: "{{ junos_host }}"
+       port: "{{ netconf_port }}"
+       user: "{{ junos_username }}"
+       passwd: "{{ junos_passwd }}"
+       timeout: 60
+       logfile: /tmp/ansible.changes.log
        load: merge
        commit: true
        src: "{{ config_file }}"

@@ -1,0 +1,40 @@
+[all:children]
+juniper
+linux
+
+[all:vars]
+ansible_python_interpreter=/root/provision-EVPN-VXLAN/bin/python
+
+[juniper:children]
+fabric
+
+[fabric]
+spine2 junos_host=100.123.24.5 mgmt_sub_gw=100.123.0.1 mgmt_sub_mask=16 aliase=spine2  PrivateAddressHostVM=100.123.25.5  
+spine1 junos_host=100.123.24.4 mgmt_sub_gw=100.123.0.1 mgmt_sub_mask=16 aliase=spine1  PrivateAddressHostVM=100.123.25.4  
+leaf2 junos_host=100.123.24.2 mgmt_sub_gw=100.123.0.1 mgmt_sub_mask=16 aliase=leaf2  PrivateAddressHostVM=100.123.25.2  
+leaf3 junos_host=100.123.24.3 mgmt_sub_gw=100.123.0.1 mgmt_sub_mask=16 aliase=leaf3  PrivateAddressHostVM=100.123.25.3  
+leaf1 junos_host=100.123.24.1 mgmt_sub_gw=100.123.0.1 mgmt_sub_mask=16 aliase=leaf1  PrivateAddressHostVM=100.123.25.1  
+
+[linux:children]
+_Ubuntu
+_HelperVM
+
+[_Ubuntu:children]
+Ubuntu-A2
+Ubuntu-A1
+Ubuntu-A3
+
+[Ubuntu-A2]
+Ubuntu-0125  ansible_ssh_host=100.123.35.1 VMName=Ubuntu-0125  
+
+[Ubuntu-A1]
+Ubuntu-0056  ansible_ssh_host=100.123.35.0 VMName=Ubuntu-0056  
+
+[Ubuntu-A3]
+Ubuntu-0092  ansible_ssh_host=100.123.35.2 VMName=Ubuntu-0092  
+
+[_HelperVM:children]
+HelperVM
+
+[HelperVM]
+HelperVM-0216  ansible_ssh_host=100.123.0.8 VMName=HelperVM-0216  
