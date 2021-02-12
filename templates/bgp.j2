@@ -1,0 +1,38 @@
+protocols {
+    bgp {
+        {% for group in bgp.groups %}
+        group {{ group.name }} {
+            {% if 'export' in group %}
+            export {{ group.export_policy }};
+            {% endif %}
+            local-as {{ group.local_as}};
+            {% if 'local_address' in group %}
+            local-address {{ group.local_address }};
+            {% endif %}
+            {% for neighbor in group.neighbors %}
+            neighbor {{ neighbor.address }}{% if 'peer_as' in neighbor %}{
+                peer-as {{ neighbor.peer_as }};
+            }
+            {% else %};
+            {% endif %}
+            {% endfor %}
+            type external;
+            {% if 'family' in group %}
+            family {{ group.family }} {
+                signaling;
+            }
+            {% endif %}
+            {% if 'cluster' in group %}
+            cluster {{ group.cluster }};
+            {% endif %}
+            {% if group.multipath is defined %}
+	    multipath{% if 'multiple_as' in group.multipath %} {
+                multiple-as;
+            }
+            {% else %};
+            {% endif %}
+            {% endif %}
+        }
+        {% endfor %}
+    }
+}

@@ -1,0 +1,21 @@
+bgp:
+  groups:
+    - name: fabric
+      type: external
+      neighbors:
+        - address: 172.16.1.5
+          peer_as: 65001
+        - address: 172.16.1.17
+          peer_as: 65002
+      multipath:
+        multiple_as: true
+      local_as: 65003
+      export_policy: export-directs;
+
+    - name: overlay
+      type: internal
+      local_address: 192.168.100.11
+      family: evpn
+      neighbors:
+        - address: 192.168.100.1
+        - address: 192.168.100.2
