@@ -1,0 +1,36 @@
+policy-options{
+	policy-statement export-directs {
+	    term loopback {
+		from {
+		    protocol direct;
+		    interface lo0.0;
+		}
+		then accept;
+	    }
+	}
+	policy-statement load-balance {
+	    term load-balance {
+		then {
+		    load-balance per-packet;
+		    accept;
+		}
+	    }
+	}
+	policy-statement vni-in {
+	    term vni5010 {
+		from community vni5010;
+		then accept;
+	    }
+	    term vni5020 {
+		from community vni5020;
+		then accept;
+	    }
+	    term t1 {
+		from community t1;
+		then accept;
+	    }
+	}
+	community t1 members target:65000:1;
+	community vni5010 members target:65000:5010;
+	community vni5020 members target:65000:5020;
+}

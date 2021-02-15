@@ -27,3 +27,8 @@ bgp:
         - address: 192.168.100.11
         - address: 192.168.100.12
         - address: 192.168.100.13
+
+routing_options:
+  router_id: 192.168.100.1
+  autonomous_system: 65000
+

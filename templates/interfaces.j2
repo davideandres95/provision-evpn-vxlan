@@ -1,0 +1,27 @@
+interfaces {
+    {% for interface in interfaces %}
+    {{ interface.name }} {
+        {% for unit in interface.units %}
+        unit {{ unit.id }} {
+            {% if interface.name == 'irb' %}
+            proxy-macip-advertisement;
+            virtual-gateway-accept-data;
+            {% endif %}
+            family {{ unit.family }} {
+                {% if unit.family == 'inet' %}
+                address {{ unit.address }}{% if interface.name == 'irb' %}{
+                    primary;
+                    virtual-gateway-address {{ unit.virtual-gw-address }};
+                }
+                {% else %};{% endif %}
+                {% elif unit.family == 'ethernet-switching' %}
+                vlan {
+                    members {{ unit.vlan.members }};
+                }
+                {% endif %}
+            }
+        }
+        {% endfor %}
+    }
+    {% endfor %}
+}

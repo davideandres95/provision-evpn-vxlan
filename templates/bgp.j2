@@ -18,7 +18,7 @@ protocols {
             {% else %};
             {% endif %}
             {% endfor %}
-            type external;
+            type {{ group.type }};
             {% if 'family' in group %}
             family {{ group.family }} {
                 signaling;
